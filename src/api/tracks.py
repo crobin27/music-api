@@ -7,8 +7,8 @@ from datetime import date
 from fastapi.params import Query
 
 
-
 router = APIRouter()
+
 
 @router.get("/tracks/", tags=["tracks"])
 def list_tracks(
@@ -33,10 +33,11 @@ def list_tracks(
     number of results to skip before returning results.
     """
 
-    list_stmt = sa.text("""
+    list_stmt = sa.text(
+        """
         SELECT t.track_id, t.title, t.runtime, al.title AS album_title, ar.name AS artist_names
         FROM tracks AS t
-        JOIN albums AS al ON t.album_id = al.album_id
+        LEFT JOIN albums AS al ON t.album_id = al.album_id
         JOIN track_artist AS ta ON ta.track_id = t.track_id
         JOIN artists AS ar ON ar.artist_id = ta.artist_id
         WHERE LOWER(t.title) LIKE '%' || :name || '%'
@@ -48,14 +49,13 @@ def list_tracks(
     name = name.lower()
 
     with db.engine.begin() as conn:
-
         result = conn.execute(
             list_stmt,
             {
                 "name": name,
                 "limit": limit,
                 "offset": offset,
-            }
+            },
         )
         result = [r._asdict() for r in list(result)]
     return result
