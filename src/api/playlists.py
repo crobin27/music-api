@@ -215,6 +215,7 @@ def generate(
                 if row[0] not in tracks:
                     tracks[row[0]] = {
                         "title": row[1],
+                        "track_id": row[0],
                         "runtime": row[2],
                         "genre": row[3],
                         "artists": [{"artist_id": row[4], "name": row[5]}],
