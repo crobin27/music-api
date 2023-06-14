@@ -1,6 +1,6 @@
 # Music API
 
-## Authors
+## Contributors
 Cole Robinson (colerobinson1112@gmail.com)
 
 Geoff Blaylock (gblaylock2024@gmail.com)
